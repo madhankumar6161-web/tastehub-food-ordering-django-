@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% block title %}Our Menu | TasteHub{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+  <h1 class="section-title mb-4">Our Menu</h1>
+
+  <!-- ================= FILTER BAR ================= -->
+  <form method="get" class="mb-4">
+    <div class="row g-2 align-items-center">
+      <div class="col-md-6">
+        <input type="text" name="q" value="{{ query }}" class="form-control" placeholder="Search dishes... e.g. Pizza, Noodles">
+      </div>
+      <div class="col-md-3">
+        <select name="category" class="form-select" onchange="this.form.submit()">
+          <option value="">All Categories</option>
+          {% for cat in categories %}
+          <option value="{{ cat.slug }}" {% if cat.slug == selected_category %}selected{% endif %}>{{ cat.name }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="col-md-3">
+        <select name="diet" class="form-select" onchange="this.form.submit()">
+          <option value="">All Dietary Types</option>
+          <option value="veg" {% if selected_diet == 'veg' %}selected{% endif %}>Vegetarian</option>
+          <option value="vegan" {% if selected_diet == 'vegan' %}selected{% endif %}>Vegan</option>
+          <option value="non_veg" {% if selected_diet == 'non_veg' %}selected{% endif %}>Non-Vegetarian</option>
+        </select>
+      </div>
+    </div>
+  </form>
+
+  <!-- ================= RESULTS GRID ================= -->
+  <div class="row g-4">
+    {% for item in items %}
+    <div class="col-6 col-md-4 col-lg-3">
+      <div class="food-card">
+        <a href="{% url 'menu:item_detail' item.slug %}">
+          <img src="{{ item.display_image }}" class="card-img-top" alt="{{ item.name }}">
+        </a>
+        <div class="card-body p-3">
+          <div class="d-flex justify-content-between align-items-start">
+            <h6 class="mb-1">{{ item.name }}</h6>
+            <span class="badge badge-diet-{{ item.dietary_type }}" title="{{ item.get_dietary_type_display }}">
+              <i class="bi bi-circle-fill" style="font-size:0.55rem;"></i>
+            </span>
+          </div>
+          <p class="text-muted small mb-2">{{ item.description|truncatewords:9 }}</p>
+          <div class="d-flex justify-content-between align-items-center">
+            <span class="price-tag">₹{{ item.price }}</span>
+            <button class="btn btn-primary-food btn-sm add-to-cart-btn"
+                    data-item-id="{{ item.id }}"
+                    data-item-image="{{ item.display_image }}">
+              <i class="bi bi-cart-plus me-1"></i>Add
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% empty %}
+    <div class="col-12 text-center py-5">
+      <i class="bi bi-emoji-frown fs-1 text-muted"></i>
+      <p class="text-muted mt-2">No dishes match your filters. Try clearing them.</p>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}Login | TasteHub{% endblock %}
+{% block content %}
+<div class="container my-5 d-flex justify-content-center">
+  <div class="checkout-card p-4" style="max-width:420px;width:100%;">
+    <h3 class="mb-4 text-center">Welcome Back</h3>
+    <form method="post">
+      {% csrf_token %}
+      <div class="mb-3">
+        <label class="form-label">Username</label>
+        <input type="text" name="username" class="form-control" required>
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Password</label>
+        <input type="password" name="password" class="form-control" required>
+      </div>
+      {% if form.errors %}
+        <p class="text-danger small">Invalid username or password.</p>
+      {% endif %}
+      <button type="submit" class="btn btn-primary-food w-100">Login</button>
+    </form>
+    <p class="text-center small mt-3 mb-0">New here? <a href="{% url 'accounts:register' %}">Create an account</a></p>
+  </div>
+</div>
+{% endblock %}

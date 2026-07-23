@@ -1,0 +1,5 @@
+Django==5.0.6
+Pillow==10.3.0
+
+# Uncomment the line below ONLY if you switch to MySQL (see README.md)
+# mysqlclient==2.2.4

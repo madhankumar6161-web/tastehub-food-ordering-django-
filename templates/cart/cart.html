@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% block title %}Your Cart | TasteHub{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+  <h1 class="section-title mb-4">Your Cart</h1>
+
+  {% if cart.items.all %}
+  <div class="row">
+    <div class="col-lg-8">
+      <div id="cart-items-container">
+        {% for line in cart.items.all %}
+        <div class="cart-item-row d-flex align-items-center p-3 mb-3" data-cart-item-id="{{ line.id }}">
+          <img src="{{ line.menu_item.display_image }}" class="rounded-3 me-3" style="width:80px;height:80px;object-fit:cover;" alt="{{ line.menu_item.name }}">
+          <div class="flex-grow-1">
+            <h6 class="mb-1">{{ line.menu_item.name }}</h6>
+            <span class="text-muted small">₹{{ line.menu_item.price }} each</span>
+          </div>
+          <div class="qty-stepper d-flex align-items-center gap-2 me-4">
+            <button type="button" class="qty-decrease" data-item-id="{{ line.id }}">−</button>
+            <span class="fw-bold item-qty">{{ line.quantity }}</span>
+            <button type="button" class="qty-increase" data-item-id="{{ line.id }}">+</button>
+          </div>
+          <div class="text-end me-3" style="min-width:80px;">
+            <span class="price-tag item-subtotal">₹{{ line.subtotal }}</span>
+          </div>
+          <button type="button" class="btn btn-sm btn-outline-danger remove-item" data-item-id="{{ line.id }}">
+            <i class="bi bi-trash"></i>
+          </button>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+
+    <div class="col-lg-4">
+      <div class="checkout-card p-4">
+        <h5 class="mb-3">Order Summary</h5>
+        <div class="d-flex justify-content-between mb-2">
+          <span>Subtotal</span>
+          <span id="cart-subtotal">₹{{ cart.total_price }}</span>
+        </div>
+        <div class="d-flex justify-content-between mb-2 text-muted small">
+          <span>Delivery Fee</span>
+          <span>Calculated at checkout</span>
+        </div>
+        <hr>
+        <div class="d-flex justify-content-between fw-bold fs-5 mb-4">
+          <span>Total</span>
+          <span id="cart-total">₹{{ cart.total_price }}</span>
+        </div>
+        <a href="{% url 'orders:checkout' %}" class="btn btn-place-order w-100 text-center">
+          Proceed to Checkout <i class="bi bi-arrow-right ms-1"></i>
+        </a>
+      </div>
+    </div>
+  </div>
+  {% else %}
+  <div class="text-center py-5">
+    <i class="bi bi-cart-x fs-1 text-muted"></i>
+    <p class="text-muted mt-3">Your cart is empty.</p>
+    <a href="{% url 'menu:menu_list' %}" class="btn btn-primary-food">Browse Menu</a>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}

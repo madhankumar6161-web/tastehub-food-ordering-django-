@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+{% block title %}Checkout | TasteHub{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+  <h1 class="section-title mb-4">Checkout</h1>
+
+  <form method="post">
+    {% csrf_token %}
+    <div class="row g-4">
+      <div class="col-lg-7">
+        <div class="checkout-card p-4 mb-4">
+          <h5 class="mb-3"><i class="bi bi-geo-alt me-2"></i>Delivery Details</h5>
+          <div class="row g-3">
+            <div class="col-md-6">
+              <label class="form-label">Full Name</label>
+              {{ form.full_name }}
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">Phone Number</label>
+              {{ form.phone_number }}
+            </div>
+            <div class="col-12">
+              <label class="form-label">Address</label>
+              {{ form.address_line }}
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">City</label>
+              {{ form.city }}
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">Pincode</label>
+              {{ form.pincode }}
+            </div>
+            <div class="col-12">
+              <label class="form-label">Delivery Notes (optional)</label>
+              {{ form.delivery_notes }}
+            </div>
+          </div>
+        </div>
+
+        <div class="checkout-card p-4">
+          <h5 class="mb-3"><i class="bi bi-credit-card me-2"></i>Payment Method</h5>
+          <div class="payment-toggle">
+            {% for radio in form.payment_method %}
+            <div class="form-check">
+              {{ radio.tag }}
+              <label class="form-check-label" for="{{ radio.id_for_label }}">{{ radio.choice_label }}</label>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-5">
+        <div class="checkout-card p-4">
+          <h5 class="mb-3">Order Summary</h5>
+          {% for line in cart.items.all %}
+          <div class="d-flex justify-content-between small mb-2">
+            <span>{{ line.quantity }} × {{ line.menu_item.name }}</span>
+            <span>₹{{ line.subtotal }}</span>
+          </div>
+          {% endfor %}
+          <hr>
+          <div class="d-flex justify-content-between mb-1">
+            <span>Subtotal</span><span>₹{{ cart.total_price }}</span>
+          </div>
+          <div class="d-flex justify-content-between mb-1">
+            <span>Delivery Fee</span><span>₹{{ delivery_fee }}</span>
+          </div>
+          <hr>
+          <div class="d-flex justify-content-between fw-bold fs-5 mb-4">
+            <span>Total</span><span>₹{{ grand_total }}</span>
+          </div>
+          <button type="submit" class="btn btn-place-order w-100">
+            Place Order <i class="bi bi-check2-circle ms-1"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  // Give every rendered form field the Bootstrap "form-control" look
+  document.addEventListener('DOMContentLoaded', function () {
+    document.querySelectorAll('form input[type=text], form input[type=tel]').forEach(el => {
+      if (!el.classList.contains('form-check-input')) el.classList.add('form-control');
+    });
+  });
+</script>
+{% endblock %}
