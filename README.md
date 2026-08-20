@@ -104,7 +104,3 @@ foodorder/                         ← project root
 │
 └── media/                         ← uploaded images land here (via admin panel)
     └── food_images/
-
-
-p of `static/css/style.css` — change
-  them there to re-theme the entire site in one place.
