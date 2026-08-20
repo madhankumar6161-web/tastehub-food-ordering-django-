@@ -49,10 +49,22 @@ simulated real-time order tracking experience.
 | Icons | Bootstrap Icons |
 
 ---
-
 ## 📸 Screenshots
 
-> *Add screenshots here — homepage, menu grid, cart, checkout, tracking page.*
+### Homepage
+![Homepage](screenshots/homepage.png)
+
+### Menu
+![Menu Page](screenshots/menu.png)
+
+### Cart
+![Cart Page](screenshots/cart.png)
+
+### Checkout
+![Checkout Page](screenshots/checkout.png)
+
+### Order Tracking
+![Tracking Page](screenshots/tracking.png)
 
 ---
 
